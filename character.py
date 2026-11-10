@@ -55,3 +55,89 @@ class Character:
     
     def __str__(self) -> str:
         return f"Character: Name = {self.name}, HP = {self.hp}, Damage = {self.damage}"
+
+#Task 04: Character specialization
+
+class Warrior(Character):
+    def __init__(self, name: str, hp_max: int = 100,
+                 damage: int = 10, weapon=None,
+                 armor: int = 5) -> None:
+        """
+        Create a Warrior character.
+
+        Args:
+            name (str): The name of the warrior.
+            hp_max (int): Maximum HP, default is 100.
+            damage (int): Base attack damage, default is 10.
+            weapon (Weapon): Optional weapon, default is None.
+            armor (int): Armor value, default is 5.
+        """
+        super().__init__(name, hp_max, damage, weapon)
+        self.armor = armor
+
+    def take_damage(self, amount: int) -> None:
+        """
+        Reduce incoming damage using the warrior's armor.
+
+        Args:
+            amount (int): Damage received before armor reduction.
+
+        The armor value is subtracted from incoming damage.
+        max() makes sure the damage cannot be negative.
+        super().take_damage() updates the warrior's HP.
+        """
+        reduced_damage = max(0, amount - self.armor)
+        super().take_damage(reduced_damage)
+
+
+# Task 04. Mage is a subclass of Character.
+
+class Mage(Character):
+    def __init__(self, name: str, hp_max: int = 100,
+                 damage: int = 10, weapon=None,
+                 mana: int = 30, mana_max: int = 30) -> None:
+        """
+        Create a Mage character.
+
+        Args:
+            name (str): The name of the mage.
+            hp_max (int): Maximum HP, default is 100.
+            damage (int): Base attack damage, default is 10.
+            weapon (Weapon): Optional weapon, default is None.
+            mana (int): Available mana, default is 30.
+            mana_max (int): Maximum mana, default is 30.
+        """
+
+        # Initialize attributes from Character.
+        super().__init__(name, hp_max, damage, weapon)
+
+        # Set the mage's mana and maximum mana.
+        self.mana_max = mana_max
+        self.mana = min(max(0, mana), mana_max)
+
+    def attack(self, target: Character) -> None:
+        """
+        Attack another character using magic or a normal attack.
+
+        Args:
+        target (Character): The character being attacked.
+
+        If the mage has at least 10 mana, it uses 10 mana to deal double base damage without using a weapon.
+        If the mage has less than 10 mana, it uses a normal attack and restores 5 mana.
+
+        Then the mana cannot exceed the maximum mana value.
+        """
+        # Use a magic attack if the mage has enough mana.
+        if self.mana >= 10:
+            self.mana -= 10
+
+            # Magic deals double base damage without using a weapon.
+            magic_damage = self.damage * 2
+            target.take_damage(magic_damage)
+
+        else:
+            # Use a normal attack, including a weapon if equipped.
+            super().attack(target)
+
+            # Restore 5 mana without exceeding the maximum.
+            self.mana = min(self.mana + 5, self.mana_max)
