@@ -9,7 +9,7 @@ class Character:
             name (str): The name of the character.
             hp_max (int): The maximum health points. Set to 100. 
             damage (int): The damage the character can deal. Set to 10.
-            weapon (Weapon): The weapon of the character. Set to None.
+            weapon (Weapon): Optional weapon for character. Set to None default. 
         """
         self.name = name
         self._hp = hp_max
@@ -37,9 +37,15 @@ class Character:
         self._hp += amount
         self._hp = min(self._hp, self.hp_max)  # Makes sure HP doesn't exceed max
 
-    # from original script 
+    # from original script:
+
+    # edited after task 3, including weapon: 
     def attack(self, target: 'Character') -> None:
-        target.take_damage(self.damage)
+        if self.weapon is not None: 
+            damage = self.weapon.roll_damage() #damage from weapon instad of default base damage. 
+        else: 
+            damage = self.damage #default base dagame. 
+        target.take_damage(damage)
 
     def introduce(self) -> str:
         return f"My name is {self.name}."
