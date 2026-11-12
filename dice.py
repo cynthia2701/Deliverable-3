@@ -1,7 +1,10 @@
 # Task 2: Introducing randomness with a Dice class
+
 import random
 
 class Dice: 
+
+
     def __init__(self, sides: int = 6) -> None:
         """
         Dice creation including number of sides.
@@ -15,18 +18,27 @@ class Dice:
             raise ValueError("Sides must be two or more.")
         self.sides = sides
 
-    # roll method added to return a number between 1 
-    # and the number of sides on the dice. 
+
     def roll(self) -> int: 
+        """
+        Rolls dice to return a random number
+        between 1 and the maximum number of sides on the dice. 
+        Returns an integer. 
+        """
         return random.randint(1, self.sides)
 
-    # __repr__ makes it so the dice can be represented as a string 
-    # showing the number of sides on the dice.
+ 
     def __repr__(self) -> str: 
+        """
+        Returns a string saying the number of sides on the dice
+        """
         return f"Dice (sides={self.sides})"
 
-    # __call__ makes it so dice can be called like a function to be 
-    # able to roll it. 
+    
     def __call__(self) -> int: 
+        """
+        Rolls the dice when called like a function.
+        Returns an integer.
+        """
         return self.roll()
         
