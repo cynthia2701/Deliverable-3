@@ -1,7 +1,10 @@
 # Task 1: update the character class
 
 class Character: 
-    def __init__(self, name: str, hp_max: int = 100, damage: int = 10, weapon: Weapon = None) -> None:
+
+
+    def __init__(self, name: str, hp_max: int = 100, 
+                 damage: int = 10, weapon: Weapon = None)-> None:
         """
         Character creation.
 
@@ -17,44 +20,84 @@ class Character:
         self.hp_max = hp_max
         self.damage = damage
 
+
     @property #only allows reading, no editing of value.
     def hp(self) -> int:
+        """
+        Returns HP of character as int. 
+        """
         return self._hp
+
     
-    # is_alive method added to check if HP is above 0. If not, character is dead. 
-   
     @property
     def is_alive(self) -> bool:
+        """
+        Checks if character is alive, meaning HP > 0. 
+        Returns True if alive, False if dead. 
+        """
         return True if self._hp > 0 else False
 
-    # take_damage added to reduce characters HP when injured. 
+ 
     def take_damage(self, amount: int) -> None:
+        """
+        Reduces the characters HP by the specified amount/damage. 
+
+        Args:
+            amount (int): The amount of damage. 
+        """
         self._hp -= amount
         self._hp = max(self._hp, 0)  # Makes sure HP doesn't go below 0
 
-    # heal method added when character heals and HP goes up.
+
     def heal(self, amount: int) -> None:
+        """
+        Restores the chracters HP by the specified amount. 
+
+        Args:
+            amount (int): The amount of healing.
+        """
         self._hp += amount
         self._hp = min(self._hp, self.hp_max)  # Makes sure HP doesn't exceed max
 
+    
     # from original script:
-
     # edited after task 3, including weapon: 
     def attack(self, target: 'Character') -> None:
+        """
+        Attack on another character, reducing their HP.
+        Damage is either done by the characters weapon if they have one, 
+        or by the characters base damage. 
+
+        Args: 
+            target (Character): The character being attacked.
+        """
         if self.weapon is not None: 
             damage = self.weapon.roll_damage() #damage from weapon instad of default base damage. 
         else: 
-            damage = self.damage #default base dagame. 
+            damage = self.damage #default base damage.  
         target.take_damage(damage)
 
+
     def introduce(self) -> str:
+        """
+        Introduces character. Returns string. 
+        """
         return f"My name is {self.name}."
 
+
     def __repr__(self) -> str:
-        return f"Name = {self.name}, HP = {self.hp} Damage = {self.damage}"
+        """
+        Representation of character with name, HP, damage. Returns string.
+        """
+        return f"Name = {self.name}, HP = {self.hp} Damage = {self.damage}."
+
     
     def __str__(self) -> str:
-        return f"Character: Name = {self.name}, HP = {self.hp}, Damage = {self.damage}"
+        """
+        String representation of character. 
+        """
+        return f"Character is {self.name}, with {self.hp} HP and {self.damage} Damage."
+
 
 #Task 04: Character specialization
 
